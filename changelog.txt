@@ -30,3 +30,6 @@
 
 1.4.8
 - correct text color
+
+1.4.9
+- correct shuffled round

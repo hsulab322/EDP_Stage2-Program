@@ -317,7 +317,7 @@ random_trial_order = [0,1,2,3,4,5]
 seq2 = [6,7,8,9,10,11]
 random.shuffle(random_trial_order)
 random.shuffle(seq2)
-while random_trial_order[-1] == seq2[0]:
+while random_trial_order[-1]+6 == seq2[0]:
     random.shuffle(seq2)
 random_trial_order.extend(seq2)
 print(random_trial_order)
@@ -969,7 +969,7 @@ for r in random_trial_order: # 12個Round
         thisExp.addData('interface_Choice.started' + '_' + str(r+1) + '-' + str(Trial_n+1) , Quit.tStartRefresh)
         thisExp.addData('interface_Choice.stopped' + '_' + str(r+1) + '-' + str(Trial_n+1) , Quit.tStopRefresh)
 
-        if currentChoice == 'Quit'or not endTrial :
+        if currentChoice == 'Quit' or not endTrial :
             Choice_List.append('Quit')
             if Trial_n == 0:
                 incentive_list.append(['Round '+str(r+1), 'Quit'])
