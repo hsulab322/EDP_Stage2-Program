@@ -82,7 +82,7 @@ frameTolerance = 0.001  # how close to onset before 'same' frame
 
 # Setup the Window
 win = visual.Window(
-    size=[1280,720], fullscr=True, screen=1, 
+    size=[1280,720], fullscr=True, screen=0, 
     winType='pyglet', allowGUI=True, allowStencil=False,
     monitor='test', color= [0.25,0.25,0.25] , colorSpace='rgb',
     blendMode='avg', useFBO=True, 
@@ -514,7 +514,7 @@ for r in [0,1,2,3]: # random_trial_order: # 12個Round
     # ------Prepare to start Routine "Interval"-------
         continueRoutine = True
         isi = random.choice([1,3])
-        routineTimer.add(0.1) # 間隔時間 isi
+        routineTimer.add(isi) # 間隔時間 isi
         # update component parameters for each repeat
         # keep track of which components have finished
         IntervalComponents = [cross]
@@ -646,7 +646,7 @@ for r in [0,1,2,3]: # random_trial_order: # 12個Round
     # -------Run Routine "Lottery"-------
         validChoice = False
         ifRelease = False
-        routineTimer.add(0.1) # Lottery time 8s
+        routineTimer.add(8) # Lottery time 8s
         while continueRoutine and routineTimer.getTime() > 0:
             # get current time
             t = LotteryClock.getTime()
@@ -721,7 +721,7 @@ for r in [0,1,2,3]: # random_trial_order: # 12個Round
     # ------Prepare to start Routine "random Interval"-------
         continueRoutine = True
         iri = random.randint(1,3) # 1,2,3
-        routineTimer.add(0.1) # 隨機間隔時間
+        routineTimer.add(iri) # 隨機間隔時間
         # update component parameters for each repeat
         # keep track of which components have finished
         IntervalComponents = [cross]
@@ -1082,7 +1082,7 @@ for r in [0,1,2,3]: # random_trial_order: # 12個Round
 
 
         continueRoutine = True
-        routineTimer.add(1) #3s
+        routineTimer.add(3) #3s
         # update component parameters for each repeat
         # keep track of which components have finished
         IntervalComponents = [text_outcome]
@@ -1539,7 +1539,7 @@ thisExp.saveAsWideText(filename+'.csv', delim=',')
 logging.flush()
 
 creds = driveapi.getCreds("driveapi/token.json")
-folderid = driveapi.create_folder(expInfo['participant'], creds)
+folderid = driveapi.create_folder(expInfo['participant']+'stage2', creds)
 # folderid = driveapi.search_folder('test', creds)[0]['id']
 driveapi.upload_to_folder(folderid, filename+'.csv', creds)
 driveapi.upload_to_folder(folderid, dfname+'.csv', creds)

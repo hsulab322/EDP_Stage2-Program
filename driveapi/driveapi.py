@@ -24,7 +24,7 @@ def create_folder(foldername, creds):
         file_metadata = {
             'name': foldername,
             'mimeType': 'application/vnd.google-apps.folder',
-            'parents': ['18Hsy0xFgHAqDJGhYL5w5J9Q5hMv3rk4K'], # "Data" Folder
+            'parents': ['1inRNXGjkvO7Dc4DOnFIUa52WautdlX7N'], # "New" Folder
             'driveId':'0AMIGWx53zKa9Uk9PVA' # "EDP Research Project"
         }
 
@@ -92,7 +92,7 @@ def search_folder(folder2find, creds):
         page_token = None
         while True:
             # pylint: disable=maybe-no-member
-            response = service.files().list(q=f"(mimeType='application/vnd.google-apps.folder') and (name = '{folder2find}') and '18Hsy0xFgHAqDJGhYL5w5J9Q5hMv3rk4K' in parents",
+            response = service.files().list(q=f"(mimeType='application/vnd.google-apps.folder') and (name = '{folder2find}') and '1inRNXGjkvO7Dc4DOnFIUa52WautdlX7N' in parents",
                                             spaces='Drive',
                                             corpora = 'drive',
                                             fields='nextPageToken, '
