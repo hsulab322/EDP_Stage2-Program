@@ -1404,13 +1404,28 @@ current_rule = all_incentive_rule[experiment]
 
 if totalIncentive >= 10001: 
     final_reward = 150 + totalIncentive * current_rule[2]
-    text_final_reward.text = f"實驗報酬為：150 + {totalIncentive} x {current_rule[2]} = {final_reward}"
+    if final_reward <= 350:
+        text_final_reward.text = f"實驗報酬為：150 + {totalIncentive} x {current_rule[2]} = {final_reward}"
+    else:
+        final_reward = 350
+        text_final_reward.text = "實驗報酬為：150 + 200 = 350"
+
+
 elif totalIncentive >= 5001: 
     final_reward = 150 + totalIncentive * current_rule[1]
-    text_final_reward.text = f"實驗報酬為：150 + {totalIncentive} x {current_rule[1]} = {final_reward}"
+    if final_reward <= 350:
+        text_final_reward.text = f"實驗報酬為：150 + {totalIncentive} x {current_rule[1]} = {final_reward}"
+    else:
+        final_reward = 350
+        text_final_reward.text = "實驗報酬為：150 + 200 = 350"
+
 elif totalIncentive >=0:
     final_reward = 150 + totalIncentive * current_rule[0]
-    text_final_reward.text = f"實驗報酬為：150 + {totalIncentive} x {current_rule[0]} = {final_reward}"
+    if final_reward <= 350:
+        text_final_reward.text = f"實驗報酬為：150 + {totalIncentive} x {current_rule[0]} = {final_reward}"
+    else:
+        final_reward = 350
+        text_final_reward.text = "實驗報酬為：150 + 200 = 350"
 else:
     final_reward = 150
     text_final_reward.text = f"實驗報酬為：{final_reward}"
