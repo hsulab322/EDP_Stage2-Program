@@ -1414,26 +1414,32 @@ def final_reward_calc(totalIncentive, experiment):
     if totalIncentive < 0:
         final_reward = base
 
-    if totalIncentive >= 0 and totalIncentive <= 5000:
+    elif totalIncentive >= 0 and totalIncentive <= 5000:
         final_reward = totalIncentive * a_5000 + base
 
-    if totalIncentive >= 5001 and totalIncentive <= 10000:
+    elif totalIncentive >= 5001 and totalIncentive <= 10000:
         final_reward = 5000 * a_5000 + (totalIncentive-5000) * b_10000 + base
 
-    if totalIncentive >= 10001 and totalIncentive <= 20000:
+    elif totalIncentive >= 10001 and totalIncentive <= 20000:
         final_reward = 5000 * a_5000 + 5000 * b_10000 + (totalIncentive-10000) * c_20000 + base
 
-    if totalIncentive >= 20000:
+    elif totalIncentive >= 20001:
         if experiment != 'MRS-fMRI':
             final_reward = ceiling
         else:
             final_reward = 5000 * a_5000 + 5000 * b_10000 + 10000 * c_20000 + (totalIncentive-20000) * ceiling + base
+    
+    # if final_reward % 10 != 0:
+    #     fr = (final_reward // 10 + 1) * 10
+    # else:
+    #     fr = final_reward
 
     return final_reward
 
 print('------------------------------------------------')
 print(experiment)
 final_reward = final_reward_calc(totalIncentive, experiment)
+print('These value can be found in csv file.')
 print('totalIncentive:', totalIncentive)
 print('final_reward:', final_reward)
 print('------------------------------------------------')
