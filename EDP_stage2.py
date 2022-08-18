@@ -358,7 +358,7 @@ globalClock = core.Clock()
 
 # initialization ends
 present_interface_round = 0
-for r in random_trial_order: # random_trial_order: # 12個Round
+for r in random_trial_order: # 12個Round
     #要顯示的round名稱
     interface_Round.image = interface_Round_List[present_interface_round]
     present_interface_round += 1
@@ -1397,11 +1397,12 @@ frameN = -1
 
 # -------Run Routine "endExp"-------
 
-all_incentive_rule = {'Behavior':[150, 0.02, 0.01, 0.005, 350], 'MRS-fMRI': [1200, 0.02, 0.01, 0.01, 1450], 'PET-fMRI': [1500, 0.1, 0.1, 0.05, 3000]}
+all_incentive_rule = {'Behavior':[150, 0.02, 0.01, 0.005, 350], 'MRS-fMRI': [1200, 0.02, 0.01, 0.01, 0.01], 'PET-fMRI': [1500, 0.1, 0.1, 0.05, 3000]}
 experiment = expInfo['experiment']
-current_rule = all_incentive_rule[experiment]
 
-def final_reward_calc(totalIncentive, current_rule):
+def final_reward_calc(totalIncentive, experiment):
+
+    current_rule = all_incentive_rule[experiment]
 
     base = current_rule[0]
     a_5000 = current_rule[1]
@@ -1423,16 +1424,21 @@ def final_reward_calc(totalIncentive, current_rule):
         final_reward = 5000 * a_5000 + 5000 * b_10000 + (totalIncentive-10000) * c_20000 + base
 
     if totalIncentive >= 20000:
-        final_reward = ceiling
-
+        if experiment != 'MRS-fMRI':
+            final_reward = ceiling
+        else:
+            final_reward = 5000 * a_5000 + 5000 * b_10000 + 10000 * c_20000 + (totalIncentive-20000) * ceiling + base
 
     return final_reward
 
+print('------------------------------------------------')
+print(experiment)
+final_reward = final_reward_calc(totalIncentive, experiment)
+print('totalIncentive:', totalIncentive)
+print('final_reward:', final_reward)
+print('------------------------------------------------')
 
-
-final_reward = final_reward_calc(totalIncentive, current_rule)
-text_final_reward.text = f"實驗報酬經計算後為：{final_reward}"
-    
+text_final_reward.text = f"實驗報酬經計算後為：{final_reward}"    
 thisExp.addData('Final reward', final_reward)
 
 while continueRoutine:
