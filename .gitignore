@@ -2,6 +2,7 @@
 *.csv
 /*.csv
 data
+*.tmp
 
 # But not these files...
 # etc...
