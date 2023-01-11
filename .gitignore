@@ -3,6 +3,9 @@
 /*.csv
 data
 *.tmp
+driveapi/token.json
+driveapi/client_secrets.json
+.DS_Store
 
 # But not these files...
 # etc...

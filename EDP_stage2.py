@@ -339,22 +339,22 @@ print(random_trial_order)
 # Outcome: 贏或輸: 3s
 
 globalClock = core.Clock()
-# text_waitfMRI = visual.TextStim(win=win, name='waitFMRI',text='Waiting for the trigger \n press esc to quit',color='black',height=80, wrapWidth = 10000 ,pos = (0,100))
-# text_expinfo = visual.TextStim(win=win, name='expinfo',  color='black',pos = (0,-300), height = 30, text = f'Participant: {subject} \n Alpha: {alpha} \n Beta: {beta} \n Max_gain: {max_gain} \n Max_lost: {max_loss}')
-# text_waitfMRI.tStartRefresh = None
-# text_waitfMRI.tStopRefresh = None
-# text_waitfMRI.draw()
-# text_expinfo.draw()
-# win.timeOnFlip(text_waitfMRI, 'tStartRefresh')
-# win.flip()
-# a = event.waitKeys(keyList=['5','escape'])
-# text_waitfMRI.tStopRefresh = core.getTime()
-# if a[-1] == 'escape':
-#     core.quit()
-# win.flip()
+text_waitfMRI = visual.TextStim(win=win, name='waitFMRI',text='Waiting for the trigger \n press esc to quit',color='black',height=80, wrapWidth = 10000 ,pos = (0,100))
+text_expinfo = visual.TextStim(win=win, name='expinfo',  color='black',pos = (0,-300), height = 30, text = f'Participant: {subject} \n Alpha: {alpha} \n Beta: {beta} \n Max_gain: {max_gain} \n Max_lost: {max_loss}')
+text_waitfMRI.tStartRefresh = None
+text_waitfMRI.tStopRefresh = None
+text_waitfMRI.draw()
+text_expinfo.draw()
+win.timeOnFlip(text_waitfMRI, 'tStartRefresh')
+win.flip()
+a = event.waitKeys(keyList=['5','escape'])
+text_waitfMRI.tStopRefresh = core.getTime()
+if a[-1] == 'escape':
+    core.quit()
+win.flip()
 
-# thisExp.addData('text_waitfMRI.started', text_waitfMRI.tStartRefresh)
-# thisExp.addData('text_waitfMRI.stopped', text_waitfMRI.tStopRefresh)
+thisExp.addData('text_waitfMRI.started', text_waitfMRI.tStartRefresh)
+thisExp.addData('text_waitfMRI.stopped', text_waitfMRI.tStopRefresh)
 
 # initialization ends
 present_interface_round = 0
