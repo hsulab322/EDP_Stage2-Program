@@ -20,10 +20,10 @@ import random
 import os  # handy system and path functions
 import sys
 import pandas as pd
-
+import numpy as np
 from psychopy.hardware import keyboard
 from pyglet.window.mouse import buttons_string
-
+import EDP_Stage2_Table_ver2 as Table
 from driveapi import driveapi
 
 # Ensure that relative paths start from the same directory as this script
@@ -286,6 +286,7 @@ alpha = expInfo['alpha']
 beta = expInfo['beta']
 max_gain = int(expInfo['max_gain'])
 max_loss = int(expInfo['max_loss'])
+experiment = expInfo['experiment']
 
 # 紀錄受試者參數資料到.csv
 thisExp.addData('Subject', expInfo['participant'])
@@ -342,7 +343,8 @@ globalClock = core.Clock()
 
 if expInfo['experiment'] != 'Behavior':
     text_waitfMRI = visual.TextStim(win=win, name='waitFMRI',text='Waiting for the trigger \n press esc to quit',color='black',height=80, wrapWidth = 10000 ,pos = (0,100))
-    text_expinfo = visual.TextStim(win=win, name='expinfo',  color='black',pos = (0,-300), height = 30, text = f'Participant: {subject} \n Alpha: {alpha} \n Beta: {beta} \n Max_gain: {max_gain} \n Max_lost: {max_loss}')
+    text_expinfo = visual.TextStim(win=win, name='expinfo',  color='black',pos = (0,-300), height = 30, 
+                                   text = f'Participant: {subject} \n Alpha: {alpha} \n Beta: {beta} \n Max_gain: {max_gain} \n Max_lost: {max_loss} \n Rule applied: {experiment}')
     text_waitfMRI.tStartRefresh = None
     text_waitfMRI.tStopRefresh = None
     text_waitfMRI.draw()
@@ -1310,6 +1312,8 @@ while continueRoutine:
                         gotValidClick = True
                         mouse_incentive.clicked_name.append(obj.name)
                 if gotValidClick:  # abort routine on response
+                    win.getMovieFrame()
+                    
                     continueRoutine = False    
     # *key_incentive* updates
     waitOnFlip = False
@@ -1360,6 +1364,7 @@ thisExp.addData('Incentive.started', text_totalIncentive.tStartRefresh)
 thisExp.addData('Incentive.stopped', text_totalIncentive.tStopRefresh)
 thisExp.addData('totalIncentive', totalIncentive)
 print('totalIncentive: ',totalIncentive)
+win.saveMovieFrames(f'{filename}_gamesummary.png') 
 
 stage2df = stage2df.append({'Round': str(r+1),
                             'Trial': 'Incentive',
@@ -1430,11 +1435,6 @@ def final_reward_calc(totalIncentive, experiment):
             final_reward = ceiling
         else:
             final_reward = 5000 * a_5000 + 5000 * b_10000 + 10000 * c_20000 + (totalIncentive-20000) * ceiling + base
-    
-    # if final_reward % 10 != 0:
-    #     fr = (final_reward // 10 + 1) * 10
-    # else:
-    #     fr = final_reward
 
     return final_reward
 
@@ -1446,8 +1446,11 @@ print('totalIncentive:', totalIncentive)
 print('final_reward:', final_reward)
 print('------------------------------------------------')
 
-text_final_reward.text = f"實驗報酬經計算後為：{final_reward}"    
+
 thisExp.addData('Final reward', final_reward)
+final_reward = np.round(final_reward, 2)
+text_final_reward.text = f"實驗報酬經計算後為：{final_reward}"    
+
 
 while continueRoutine:
     # get current time
@@ -1569,12 +1572,24 @@ win.flip()
 # these shouldn't be strictly necessary (should auto-save)
 thisExp.saveAsWideText(filename+'.csv', delim=',')
 logging.flush()
+try:
+    subject = Table.EDP_table(filename+'.csv')
+    gametablename = subject.EDP_Stage2_Table(_thisDir+'/data')
+except Exception as e:
+    print('error:', e)
+    print(filename+'.csv', 'failed')
 
-creds = driveapi.getCreds("driveapi/token.json")
-folderid = driveapi.create_folder(expInfo['participant']+'_stage2', creds)
-# folderid = driveapi.search_folder('test', creds)[0]['id']
-driveapi.upload_to_folder(folderid, filename+'.csv', creds)
-driveapi.upload_to_folder(folderid, dfname+'.csv', creds)
+try:
+    creds = driveapi.getCreds("driveapi/token.json")
+    folderid = driveapi.create_folder(expInfo['participant']+'_stage2', creds)
+    # folderid = driveapi.search_folder('test', creds)[0]['id']
+    driveapi.upload_to_folder(folderid, filename+'.csv', creds)
+    driveapi.upload_to_folder(folderid, dfname+'.csv', creds)
+    driveapi.upload_to_folder(folderid, gametablename, creds)
+    driveapi.upload_to_folder(folderid, f'{filename}_gamesummary.png', creds)
+except Exception as e:
+    print('error:', e)
+    print('upload failed')
 
 # make sure everything is closed down
 thisExp.abort()  # or data files will save again on exit

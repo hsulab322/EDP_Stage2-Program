@@ -50,20 +50,26 @@ def upload_to_folder(real_folder_id, file_upload, creds):
     TODO(developer) - See https://developers.google.com/identity
     for guides on implementing OAuth2 for the application.
     """
+    if file_upload.endswith('xlsx'): 
+        mimetype='application/vnd.ms-excel'
+    elif file_upload.endswith('csv'):
+        mimetype='text/csv'
+    elif file_upload.endswith('png'):
+        mimetype='image/png'
 
     try:
         # create drive api client
         service = build('drive', 'v3', credentials=creds)
 
         folder_id = real_folder_id
-        file_upload_name = re.findall('data/(.+)', file_upload)[0]
+        file_upload_name = re.findall(r'data[\\/](.+)', str(file_upload))[0]
         file_metadata = {
             'name': file_upload_name,
             'parents': [folder_id],
             'driveId':'0AMIGWx53zKa9Uk9PVA' # EDP Research Project
         }
         media = MediaFileUpload(file_upload,
-                                mimetype='text/csv', resumable=True)
+                                mimetype=mimetype, resumable=True)
         # pylint: disable=maybe-no-member
         file = service.files().create(body=file_metadata, media_body=media,
                                       fields='id',
