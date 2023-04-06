@@ -352,6 +352,7 @@ if expInfo['experiment'] != 'Behavior':
     win.timeOnFlip(text_waitfMRI, 'tStartRefresh')
     win.flip()
     a = event.waitKeys(keyList=['5','escape'])
+    # win.getMovieFrame()
     text_waitfMRI.tStopRefresh = core.getTime()
     if a[-1] == 'escape':
         core.quit()
@@ -435,6 +436,7 @@ for r in random_trial_order: # 12個Round
                             gotValidClick = True
                             mouse_Round.clicked_name.append(obj.name)
                     if gotValidClick:  # abort routine on response
+                        # win.getMovieFrame()
                         continueRoutine = False
         
             # *key_Round* updates
@@ -580,6 +582,7 @@ for r in random_trial_order: # 12個Round
                 win.flip()
 
     # -------Ending Routine "Interval"-------
+        # win.getMovieFrame()
         for thisComponent in IntervalComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
@@ -704,7 +707,7 @@ for r in random_trial_order: # 12個Round
                 win.flip()
 
     # -------Ending Routine "Lottery"-------
-
+        # win.getMovieFrame()
         for thisComponent in LotteryComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
@@ -786,6 +789,7 @@ for r in random_trial_order: # 12個Round
                 win.flip()
 
     # -------Ending Routine "random Interval"-------
+        # win.getMovieFrame()
         for thisComponent in IntervalComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
@@ -831,6 +835,7 @@ for r in random_trial_order: # 12個Round
         ifRelease = False
         endTrial = False
         currentChoice = "Quit"
+        # save = False
         while continueRoutine and routineTimer.getTime() > 0:
             # get current time
             t = ChoiceClock.getTime()
@@ -968,7 +973,13 @@ for r in random_trial_order: # 12個Round
             # refresh the screen
             if continueRoutine:  # don't flip if this routine is over or we'll get a blank screen
                 win.flip()
+
+            # if not save:
+            #     win.getMovieFrame()
+            #     save = True
+            
     # -------Ending Routine "Choice"-------
+        # win.getMovieFrame()
         for thisComponent in ChoiceComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
@@ -1139,6 +1150,7 @@ for r in random_trial_order: # 12個Round
                 win.flip()
 
     # -------Ending Routine "Outcome"-------
+        # win.getMovieFrame()
         for thisComponent in IntervalComponents:
             if hasattr(thisComponent, "setAutoDraw"):
                 thisComponent.setAutoDraw(False)
@@ -1507,7 +1519,9 @@ while continueRoutine:
                         gotValidClick = True
                         mouse_endExp.clicked_name.append(obj.name)
                 if gotValidClick:  # abort routine on response
-                    continueRoutine = False    
+                    # win.getMovieFrame()
+                    continueRoutine = False
+
     # *key_endExp* updates
     waitOnFlip = False
     if key_endExp.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
@@ -1568,7 +1582,13 @@ routineTimer.reset()
 stage2df.to_csv(dfname+'.csv',index=False)
 win.flip()
 
+text_upload = visual.TextStim(win=win, name='end',
+    text='', font='Calibri', height=36, wrapWidth=1000,
+    color='black', pos = (0,100))
 
+text_upload.text = 'Uploading! Don\'t quit'
+text_upload.draw()
+win.flip()
 # these shouldn't be strictly necessary (should auto-save)
 thisExp.saveAsWideText(filename+'.csv', delim=',')
 logging.flush()
@@ -1581,15 +1601,27 @@ except Exception as e:
 
 try:
     creds = driveapi.getCreds("driveapi/token.json")
-    folderid = driveapi.create_folder(expInfo['participant']+'_stage2', creds)
+    folderid = driveapi.create_folder(expInfo['participant']+'_stage2'+experiment[0], creds)
     # folderid = driveapi.search_folder('test', creds)[0]['id']
     driveapi.upload_to_folder(folderid, filename+'.csv', creds)
     driveapi.upload_to_folder(folderid, dfname+'.csv', creds)
     driveapi.upload_to_folder(folderid, gametablename, creds)
     driveapi.upload_to_folder(folderid, f'{filename}_gamesummary.png', creds)
+    text_upload.text = 'Upload Success \n This message will last 5 seconds'
+
 except Exception as e:
     print('error:', e)
     print('upload failed')
+    text_upload.text = 'Upload Failed \n This message will last 5 seconds'
+
+win.flip()
+text_upload.draw()
+win.flip()
+routineTimer.reset()
+routineTimer.add(5)
+while routineTimer.getTime() > 0:
+    pass
+win.flip()
 
 # make sure everything is closed down
 thisExp.abort()  # or data files will save again on exit
