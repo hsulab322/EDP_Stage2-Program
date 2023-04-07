@@ -1416,7 +1416,7 @@ frameN = -1
 
 # -------Run Routine "endExp"-------
 
-all_incentive_rule = {'Behavior':[150, 0.02, 0.01, 0.005, 350], 'MRS-fMRI': [1200, 0.02, 0.01, 0.01, 0.01], 'PET-fMRI': [1500, 0.1, 0.1, 0.05, 3000]}
+all_incentive_rule = {'Behavior':[150, 0.02, 0.01, 0.005, 350], 'MRS-fMRI': [1000, 0.02, 0.01, 0.01, 0.01], 'PET-fMRI': [1000, 0.1, 0.1, 0.05, 3000]}
 experiment = expInfo['experiment']
 
 def final_reward_calc(totalIncentive, experiment):
